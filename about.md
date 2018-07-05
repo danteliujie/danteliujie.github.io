@@ -7,4 +7,7 @@ title: 关于
 
 个人技术博客
 
+致谢:
+    本博客源码源自https://github.com/mxnet-zh/blog
+
 
