@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>DanteLiujie's blog - ASR Processing</title>
+    <link rel="icon" href="https://applenob.github.io/static/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="https://applenob.github.io/static/favicon.ico" type="image/x-icon" />
+    <meta name="description" content="">
+    <meta name="author" content="Kevin Chan">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+    <script src="https://applenob.github.io/theme/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="https://applenob.github.io/theme/bootstrap.min.css" rel="stylesheet">
+    <link href="https://applenob.github.io/theme/bootstrap.min.responsive.css" rel="stylesheet">
+    <link href="https://applenob.github.io/theme/local.css" rel="stylesheet">
+    <link href="https://applenob.github.io/theme/pygments.css" rel="stylesheet">
+
+    <!-- So Firefox can bookmark->"abo this site" -->
+    <link href="https://applenob.github.io/feeds/all.atom.xml" rel="alternate" title="DanteLiujie's blog" type="application/atom+xml">
+</head>
+
+<body>
+
+<div class="navbar">
+    <div class="navbar-inner">
+    <div class="container">
+
+         <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+         </a>
+
+        <a class="brand" href="https://danteliujie.github.io">DanteLiujie's blog</a>
+
+        <div class="nav-collapse">
+        <ul class="nav">
+            
+        </ul>
+        </div>
+        
+    </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="content">
+    <div class="row">
+
+    <div class="span9" style="width:100%">
+    <div class='article'>
+        <div class="content-title">
+            <h1>ASR Processing</h1>
+            全部内容来自 <a class="url fn" href="https://shichaog1.gitbooks.io/hand-book-of-asr-processing/">Shichaog1</a> 的博客, 修改了一些显示style以获取所需的打印效果, 修正了一些小错误, 主要目的用于个人打印用.
+        </div>
+
+        <div>
+		<style type="text/css">
+			/*!
+			*
+			* IPython notebook
+			*
+			*/
+			/* CSS font colors for translated ANSI colors. */
+			.ansibold {
+			  font-weight: bold;
+			}
+			/* use dark versions for foreground, to improve visibility */
+			.ansiblack {
+			  color: black;
+			}
+			.ansired {
+			  color: darkred;
+			}
+			.ansigreen {
+			  color: darkgreen;
+			}
+			.ansiyellow {
+			  color: #c4a000;
+			}
+			.ansiblue {
+			  color: darkblue;
+			}
+			.ansipurple {
+			  color: darkviolet;
+			}
+			.ansicyan {
+			  color: steelblue;
+			}
+			.ansigray {
+			  color: gray;
+			}
+			/* and light for background, for the same reason */
+			.ansibgblack {
+			  background-color: black;
+			}
+			.ansibgred {
+			  background-color: red;
+			}
+			.ansibggreen {
+			  background-color: green;
+			}
+			.ansibgyellow {
+			  background-color: yellow;
+			}
+			.ansibgblue {
+			  background-color: blue;
+			}
+			.ansibgpurple {
+			  background-color: magenta;
+			}
+			.ansibgcyan {
+			  background-color: cyan;
+			}
+			.ansibggray {
+			  background-color: gray;
+			}
+			div.cell {
+			  /* Old browsers */
+			  display: -webkit-box;
+			  -webkit-box-orient: vertical;
+			  -webkit-box-align: stretch;
+			  display: -moz-box;
+			  -moz-box-orient: vertical;
+			  -moz-box-align: stretch;
+			  display: box;
+			  box-orient: vertical;
+			  box-align: stretch;
+			  /* Modern browsers */
+			  display: flex;
+			  flex-direction: column;
+			  align-items: stretch;
+			  border-radius: 2px;
+			  box-sizing: border-box;
+			  -moz-box-sizing: border-box;
+			  -webkit-box-sizing: border-box;
+			  border-width: 1px;
+			  border-style: solid;
+			  border-color: transparent;
+			  width: 100%;
+			  padding: 5px;
+			  /* This acts as a spacer between cells, that is outside the border */
+			  margin: 0px;
+			  outline: none;
+			  border-left-width: 1px;
+			  padding-left: 5px;
+			  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+			}
+			div.cell.jupyter-soft-selected {
+			  border-left-color: #90CAF9;
+			  border-left-color: #E3F2FD;
+			  border-left-width: 1px;
+			  padding-left: 5px;
+			  border-right-color: #E3F2FD;
+			  border-right-width: 1px;
+			  background: #E3F2FD;
+			}
+			@media print {
+			  div.cell.jupyter-soft-selected {
+				border-color: transparent;
+			  }
+			}
+			div.cell.selected {
+			  border-color: #ababab;
+			  border-left-width: 0px;
+			  padding-left: 6px;
+			  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+			}
+			@media print {
+			  div.cell.selected {
+				border-color: transparent;
+			  }
+			}
+			div.cell.selected.jupyter-soft-selected {
+			  border-left-width: 0;
+			  padding-left: 6px;
+			  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+			}
+			.edit_mode div.cell.selected {
+			  border-color: #66BB6A;
+			  border-left-width: 0px;
+			  padding-left: 6px;
+			  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+			}
+			@media print {
+			  .edit_mode div.cell.selected {
+				border-color: transparent;
+			  }
+			}
+			.prompt {
+			  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+			  min-width: 14ex;
+			  /* This padding is tuned to match the padding on the CodeMirror editor. */
+			  padding: 0.4em;
+			  margin: 0px;
+			  font-family: monospace;
+			  text-align: right;
+			  /* This has to match that of the the CodeMirror class line-height below */
+			  line-height: 1.21429em;
+			  /* Don't highlight prompt number selection */
+			  -webkit-touch-callout: none;
+			  -webkit-user-select: none;
+			  -khtml-user-select: none;
+			  -moz-user-select: none;
+			  -ms-user-select: none;
+			  user-select: none;
+			  /* Use default cursor */
+			  cursor: default;
+			}
+			@media (max-width: 540px) {
+			  .prompt {
+				text-align: left;
+			  }
+			}
+			div.inner_cell {
+			  min-width: 0;
+			  /* Old browsers */
+			  display: -webkit-box;
+			  -webkit-box-orient: vertical;
+			  -webkit-box-align: stretch;
+			  display: -moz-box;
+			  -moz-box-orient: vertical;
+			  -moz-box-align: stretch;
+			  display: box;
+			  box-orient: vertical;
+			  box-align: stretch;
+			  /* Modern browsers */
+			  display: flex;
+			  flex-direction: column;
+			  align-items: stretch;
+			  /* Old browsers */
+			  -webkit-box-flex: 1;
+			  -moz-box-flex: 1;
+			  box-flex: 1;
+			  /* Modern browsers */
+			  flex: 1;
+			}
+			/* input_area and input_prompt must match in top border and margin for alignment */
+			div.input_area {
+			  border: 1px solid #cfcfcf;
+			  border-radius: 2px;
+			  background: #f7f7f7;
+			  line-height: 1.21429em;
+			}
+			/* This is needed so that empty prompt areas can collapse to zero height when there
+			   is no content in the output_subarea and the prompt. The main purpose of this is
+			   to make sure that empty JavaScript output_subareas have no height. */
+			div.prompt:empty {
+			  padding-top: 0;
+			  padding-bottom: 0;
+			}
+			div.unrecognized_cell {
+			  padding: 5px 5px 5px 0px;
+			  /* Old browsers */
+			  display: -webkit-box;
+			  -webkit-box-orient: horizontal;
+			  -webkit-box-align: stretch;
+			  display: -moz-box;
+			  -moz-box-orient: horizontal;
+			  -moz-box-align: stretch;
+			  display: box;
+			  box-orient: horizontal;
+			  box-align: stretch;
+			  /* Modern browsers */
+			  display: flex;
+			  flex-direction: row;
+			  align-items: stretch;
+			}
+			div.unrecognized_cell .inner_cell {
+			  border-radius: 2px;
+			  padding: 5px;
+			  font-weight: bold;
+			  color: red;
+			  border: 1px solid #cfcfcf;
+			  background: #eaeaea;
+			}
+			div.unrecognized_cell .inner_cell a {
+			  color: inherit;
+			  text-decoration: none;
+			}
+			div.unrecognized_cell .inner_cell a:hover {
+			  color: inherit;
+			  text-decoration: none;
+			}
+			@media (max-width: 540px) {
+			  div.unrecognized_cell > div.prompt {
+				display: none;
+			  }
+			}
+			div.code_cell {
+			  /* avoid page breaking on code cells when printing */
+			}
+			@media print {
+			  div.code_cell {
+				page-break-inside: avoid;
+			  }
+			}
+			/* any special styling for code cells that are currently running goes here */
+			div.input {
+			  page-break-inside: avoid;
+			  /* Old browsers */
+			  display: -webkit-box;
+			  -webkit-box-orient: horizontal;
+			  -webkit-box-align: stretch;
+			  display: -moz-box;
+			  -moz-box-orient: horizontal;
+			  -moz-box-align: stretch;
+			  display: box;
+			  box-orient: horizontal;
+			  box-align: stretch;
+			  /* Modern browsers */
+			  display: flex;
+			  flex-direction: row;
+			  align-items: stretch;
+			}
+			@media (max-width: 540px) {
+			  div.input {
+				/* Old browsers */
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-box-align: stretch;
+				display: -moz-box;
+				-moz-box-orient: vertical;
+				-moz-box-align: stretch;
+				display: box;
+				box-orient: vertical;
+				box-align: stretch;
+				/* Modern browsers */
+				display: flex;
+				flex-direction: column;
+				align-items: stretch;
+			  }
+			}
+			/* input_area and input_prompt must match in top border and margin for alignment */
+			div.input_prompt {
+			  color: #303F9F;
+			  border-top: 1px solid transparent;
+			}
+			div.input_area > div.highlight {
+			  margin: 0.4em;
+			  border: none;
+			  padding: 0px;
+			  background-color: transparent;
+			}
+			div.input_area > div.highlight > pre {
+			  margin: 0px;
+			  border: none;
+			  padding: 0px;
+			  background-color: transparent;
+			}
+			/* The following gets added to the <head> if it is detected that the user has a
+			 * monospace font with inconsistent normal/bold/italic height.  See
+			 * notebookmain.js.  Such fonts will have keywords vertically offset with
+			 * respect to the rest of the text.  The user should select a better font.
+			 * See: https://github.com/ipython/ipython/issues/1503
+			 *
+			 * .CodeMirror span {
+			 *      vertical-align: bottom;
+			 * }
+			 */
+			.CodeMirror {
+			  line-height: 1.21429em;
+			  /* Changed from 1em to our global default */
+			  font-size: 14px;
+			  height: auto;
+			  /* Changed to auto to autogrow */
+			  background: none;
+			  /* Changed from white to allow our bg to show through */
+			}
+			.CodeMirror-scroll {
+			  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+			  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+			  overflow-y: hidden;
+			  overflow-x: auto;
+			}
+			.CodeMirror-lines {
+			  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+			  /* we have set a different line-height and want this to scale with that. */
+			  padding: 0.4em;
+			}
+			.CodeMirror-linenumber {
+			  padding: 0 8px 0 4px;
+			}
+			.CodeMirror-gutters {
+			  border-bottom-left-radius: 2px;
+			  border-top-left-radius: 2px;
+			}
+			.CodeMirror pre {
+			  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+			  /* .CodeMirror-lines */
+			  padding: 0;
+			  border: 0;
+			  border-radius: 0;
+			}
+			/*
+
+			Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+			Adapted from GitHub theme
+
+			*/
+			.highlight-base {
+			  color: #000;
+			}
+			.highlight-variable {
+			  color: #000;
+			}
+			.highlight-variable-2 {
+			  color: #1a1a1a;
+			}
+			.highlight-variable-3 {
+			  color: #333333;
+			}
+			.highlight-string {
+			  color: #BA2121;
+			}
+			.highlight-comment {
+			  color: #408080;
+			  font-style: italic;
+			}
+			.highlight-number {
+			  color: #080;
+			}
+			.highlight-atom {
+			  color: #88F;
+			}
+			.highlight-keyword {
+			  color: #008000;
+			  font-weight: bold;
+			}
+			.highlight-builtin {
+			  color: #008000;
+			}
+			.highlight-error {
+			  color: #f00;
+			}
+			.highlight-operator {
+			  color: #AA22FF;
+			  font-weight: bold;
+			}
+			.highlight-meta {
+			  color: #AA22FF;
+			}
+			/* previously not defined, copying from default codemirror */
+			.highlight-def {
+			  color: #00f;
+			}
+			.highlight-string-2 {
+			  color: #f50;
+			}
+			.highlight-qualifier {
+			  color: #555;
+			}
+			.highlight-bracket {
+			  color: #997;
+			}
+			.highlight-tag {
+			  color: #170;
+			}
+			.highlight-attribute {
+			  color: #00c;
+			}
+			.highlight-header {
+			  color: blue;
+			}
+			.highlight-quote {
+			  color: #090;
+			}
+			.highlight-link {
+			  color: #00c;
+			}
+			/* apply the same style to codemirror */
+			.cm-s-ipython span.cm-keyword {
+			  color: #008000;
+			  font-weight: bold;
+			}
+			.cm-s-ipython span.cm-atom {
+			  color: #88F;
+			}
+			.cm-s-ipython span.cm-number {
+			  color: #080;
+			}
+			.cm-s-ipython span.cm-def {
+			  color: #00f;
+			}
+			.cm-s-ipython span.cm-variable {
+			  color: #000;
+			}
+			.cm-s-ipython span.cm-operator {
+			  color: #AA22FF;
+			  font-weight: bold;
+			}
+			.cm-s-ipython span.cm-variable-2 {
+			  color: #1a1a1a;
+			}
+			.cm-s-ipython span.cm-variable-3 {
+			  color: #333333;
+			}
+			.cm-s-ipython span.cm-comment {
+			  color: #408080;
+			  font-style: italic;
+			}
+			.cm-s-ipython span.cm-string {
+			  color: #BA2121;
+			}
+			.cm-s-ipython span.cm-string-2 {
+			  color: #f50;
+			}
+			.cm-s-ipython span.cm-meta {
+			  color: #AA22FF;
+			}
+			.cm-s-ipython span.cm-qualifier {
+			  color: #555;
+			}
+			.cm-s-ipython span.cm-builtin {
+			  color: #008000;
+			}
+			.cm-s-ipython span.cm-bracket {
+			  color: #997;
+			}
+			.cm-s-ipython span.cm-tag {
+			  color: #170;
+			}
+			.cm-s-ipython span.cm-attribute {
+			  color: #00c;
+			}
+			.cm-s-ipython span.cm-header {
+			  color: blue;
+			}
+			.cm-s-ipython span.cm-quote {
+			  color: #090;
+			}
+			.cm-s-ipython span.cm-link {
+			  color: #00c;
+			}
+			.cm-s-ipython span.cm-error {
+			  color: #f00;
+			}
+			.cm-s-ipython span.cm-tab {
+			  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+			  background-position: right;
+			  background-repeat: no-repeat;
+			}
+			div.output_wrapper {
+			  /* this position must be relative to enable descendents to be absolute within it */
+			  position: relative;
+			  /* Old browsers */
+			  display: -webkit-box;
+			  -webkit-box-orient: vertical;
+			  -webkit-box-align: stretch;
+			  display: -moz-box;
+			  -moz-box-orient: vertical;
+			  -moz-box-align: stretch;
+			  display: box;
+			  box-orient: vertical;
+			  box-align: stretch;
+			  /* Modern browsers */
+			  display: flex;
+			  flex-direction: column;
+			  align-items: stretch;
+			  z-index: 1;
+			}
+			/* class for the output area when it should be height-limited */
+			div.output_scroll {
+			  /* ideally, this would be max-height, but FF barfs all over that */
+			  height: 24em;
+			  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+			  width: 100%;
+			  overflow: auto;
+			  border-radius: 2px;
+			  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+			  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+			  display: block;
+			}
+			/* output div while it is collapsed */
+			div.output_collapsed {
+			  margin: 0px;
+			  padding: 0px;
+			  /* Old browsers */
+			  display: -webkit-box;
+			  -webkit-box-orient: vertical;
+			  -webkit-box-align: stretch;
+			  display: -moz-box;
+			  -moz-box-orient: vertical;
+			  -moz-box-align: stretch;
+			  display: box;
+			  box-orient: vertical;
+			  box-align: stretch;
+			  /* Modern browsers */
+			  display: flex;
+			  flex-direction: column;
+			  align-items: stretch;
+			}
+			div.out_prompt_overlay {
+			  height: 100%;
+			  padding: 0px 0.4em;
+			  position: absolute;
+			  border-radius: 2px;
+			}
+			div.out_prompt_overlay:hover {
+			  /* use inner shadow to get border that is computed the same on WebKit/FF */
+			  -webkit-box-shadow: inset 0 0 1px #000;
+			  box-shadow: inset 0 0 1px #000;
+			  background: rgba(240, 240, 240, 0.5);
+			}
+			div.output_prompt {
+			  color: #D84315;
+			}
+			/* This class is the outer container of all output sections. */
+			div.output_area {
+			  padding: 0px;
+			  page-break-inside: avoid;
+			  /* Old browsers */
+			  display: -webkit-box;
+			  -webkit-box-orient: horizontal;
+			  -webkit-box-align: stretch;
+			  display: -moz-box;
+			  -moz-box-orient: horizontal;
+			  -moz-box-align: stretch;
+			  display: box;
+			  box-orient: horizontal;
+			  box-align: stretch;
+			  /* Modern browsers */
+			  display: flex;
+			  flex-direction: row;
+			  align-items: stretch;
+			}
+			div.output_area .MathJax_Display {
+			  text-align: left !important;
+			}
+			div.output_area 
+			div.output_area 
+			div.output_area img,
+			div.output_area svg {
+			  max-width: 100%;
+			  height: auto;
+			}
+			div.output_area img.unconfined,
+			div.output_area svg.unconfined {
+			  max-width: none;
+			}
+			/* This is needed to protect the pre formating from global settings such
+			   as that of bootstrap */
+			.output {
+			  /* Old browsers */
+			  display: -webkit-box;
+			  -webkit-box-orient: vertical;
+			  -webkit-box-align: stretch;
+			  display: -moz-box;
+			  -moz-box-orient: vertical;
+			  -moz-box-align: stretch;
+			  display: box;
+			  box-orient: vertical;
+			  box-align: stretch;
+			  /* Modern browsers */
+			  display: flex;
+			  flex-direction: column;
+			  align-items: stretch;
+			}
+			@media (max-width: 540px) {
+			  div.output_area {
+				/* Old browsers */
+				display: -webkit-box;
+				-webkit-box-orient: vertical;
+				-webkit-box-align: stretch;
+				display: -moz-box;
+				-moz-box-orient: vertical;
+				-moz-box-align: stretch;
+				display: box;
+				box-orient: vertical;
+				box-align: stretch;
+				/* Modern browsers */
+				display: flex;
+				flex-direction: column;
+				align-items: stretch;
+			  }
+			}
+			div.output_area pre {
+			  margin: 0;
+			  padding: 0;
+			  border: 0;
+			  vertical-align: baseline;
+			  color: black;
+			  background-color: transparent;
+			  border-radius: 0;
+			}
+			/* This class is for the output subarea inside the output_area and after
+			   the prompt div. */
+			div.output_subarea {
+			  overflow-x: auto;
+			  padding: 0.4em;
+			  /* Old browsers */
+			  -webkit-box-flex: 1;
+			  -moz-box-flex: 1;
+			  box-flex: 1;
+			  /* Modern browsers */
+			  flex: 1;
+			  max-width: calc(100% - 14ex);
+			}
+			div.output_scroll div.output_subarea {
+			  overflow-x: visible;
+			}
+			/* The rest of the output_* classes are for special styling of the different
+			   output types */
+			/* all text output has this class: */
+			div.output_text {
+			  text-align: left;
+			  color: #000;
+			  /* This has to match that of the the CodeMirror class line-height below */
+			  line-height: 1.21429em;
+			}
+			/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+			div.output_stderr {
+			  background: #fdd;
+			  /* very light red background for stderr */
+			}
+			div.output_latex {
+			  text-align: left;
+			}
+			/* Empty output_javascript divs should have no height */
+			div.output_javascript:empty {
+			  padding: 0;
+			}
+			.js-error {
+			  color: darkred;
+			}
+			/* raw_input styles */
+			div.raw_input_container {
+			  line-height: 1.21429em;
+			  padding-top: 5px;
+			}
+			pre.raw_input_prompt {
+			  /* nothing needed here. */
+			}
+			input.raw_input {
+			  font-family: monospace;
+			  font-size: inherit;
+			  color: inherit;
+			  width: auto;
+			  /* make sure input baseline aligns with prompt */
+			  vertical-align: baseline;
+			  /* padding + margin = 0.5em between prompt and cursor */
+			  padding: 0em 0.25em;
+			  margin: 0em 0.25em;
+			}
+			input.raw_input:focus {
+			  box-shadow: none;
+			}
+			p.p-space {
+			  margin-bottom: 10px;
+			}
+			div.output_unrecognized {
+			  padding: 5px;
+			  font-weight: bold;
+			  color: red;
+			}
+			div.output_unrecognized a {
+			  color: inherit;
+			  text-decoration: none;
+			}
+			div.output_unrecognized a:hover {
+			  color: inherit;
+			  text-decoration: none;
+			}
+			.rendered_html {
+			  color: #000;
+			  /* any extras will just be numbers: */
+			}
+
+
+
+			.rendered_html :link {
+			  text-decoration: underline;
+			}
+			.rendered_html :visited {
+			  text-decoration: underline;
+			}
+
+
+
+
+
+
+			.rendered_html h1:first-child {
+			  margin-top: 0.538em;
+			}
+			.rendered_html h2:first-child {
+			  margin-top: 0.636em;
+			}
+			.rendered_html h3:first-child {
+			  margin-top: 0.777em;
+			}
+			.rendered_html h4:first-child {
+			  margin-top: 1em;
+			}
+			.rendered_html h5:first-child {
+			  margin-top: 1em;
+			}
+			.rendered_html h6:first-child {
+			  margin-top: 1em;
+			}
+
+
+
+
+
+
+
+
+			.rendered_html * + ul {
+			  margin-top: 1em;
+			}
+			.rendered_html * + ol {
+			  margin-top: 1em;
+			}
+
+
+			.rendered_html pre,
+
+
+
+			.rendered_html tr,
+			.rendered_html th,
+
+			.rendered_html td,
+
+
+			.rendered_html * + table {
+			  margin-top: 1em;
+			}
+
+			.rendered_html * + p {
+			  margin-top: 1em;
+			}
+
+			.rendered_html * + img {
+			  margin-top: 1em;
+			}
+			.rendered_html img,
+
+			.rendered_html img.unconfined,
+
+			div.text_cell {
+			  /* Old browsers */
+			  display: -webkit-box;
+			  -webkit-box-orient: horizontal;
+			  -webkit-box-align: stretch;
+			  display: -moz-box;
+			  -moz-box-orient: horizontal;
+			  -moz-box-align: stretch;
+			  display: box;
+			  box-orient: horizontal;
+			  box-align: stretch;
+			  /* Modern browsers */
+			  display: flex;
+			  flex-direction: row;
+			  align-items: stretch;
+			}
+			@media (max-width: 540px) {
+			  div.text_cell > div.prompt {
+				display: none;
+			  }
+			}
+			div.text_cell_render {
+			  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+			  outline: none;
+			  resize: none;
+			  width: inherit;
+			  border-style: none;
+			  padding: 0.5em 0.5em 0.5em 0.4em;
+			  color: #000;
+			  box-sizing: border-box;
+			  -moz-box-sizing: border-box;
+			  -webkit-box-sizing: border-box;
+			}
+			a.anchor-link:link {
+			  text-decoration: none;
+			  padding: 0px 20px;
+			  visibility: hidden;
+			}
+			h1:hover .anchor-link,
+			h2:hover .anchor-link,
+			h3:hover .anchor-link,
+			h4:hover .anchor-link,
+			h5:hover .anchor-link,
+			h6:hover .anchor-link {
+			  visibility: visible;
+			}
+			.text_cell.rendered .input_area {
+			  display: none;
+			}
+			.text_cell.rendered 
+			.text_cell.unrendered .text_cell_render {
+			  display: none;
+			}
+			.cm-header-1,
+			.cm-header-2,
+			.cm-header-3,
+			.cm-header-4,
+			.cm-header-5,
+			.cm-header-6 {
+			  font-weight: bold;
+			  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+			}
+			.cm-header-1 {
+			  font-size: 185.7%;
+			}
+			.cm-header-2 {
+			  font-size: 157.1%;
+			}
+			.cm-header-3 {
+			  font-size: 128.6%;
+			}
+			.cm-header-4 {
+			  font-size: 110%;
+			}
+			.cm-header-5 {
+			  font-size: 100%;
+			  font-style: italic;
+			}
+			.cm-header-6 {
+			  font-size: 100%;
+			  font-style: italic;
+			}
+		</style>
+		<style type="text/css">
+			.highlight .hll { background-color: #ffffcc }
+			.highlight  { background: #f8f8f8; }
+			.highlight .c { color: #408080; font-style: italic } /* Comment */
+			.highlight .err { border: 1px solid #FF0000 } /* Error */
+			.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+			.highlight .o { color: #666666 } /* Operator */
+			.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+			.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+			.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+			.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+			.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+			.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+			.highlight .gd { color: #A00000 } /* Generic.Deleted */
+			.highlight .ge { font-style: italic } /* Generic.Emph */
+			.highlight .gr { color: #FF0000 } /* Generic.Error */
+			.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+			.highlight .gi { color: #00A000 } /* Generic.Inserted */
+			.highlight .go { color: #888888 } /* Generic.Output */
+			.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+			.highlight .gs { font-weight: bold } /* Generic.Strong */
+			.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+			.highlight .gt { color: #0044DD } /* Generic.Traceback */
+			.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+			.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+			.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+			.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+			.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+			.highlight .kt { color: #B00040 } /* Keyword.Type */
+			.highlight .m { color: #666666 } /* Literal.Number */
+			.highlight .s { color: #BA2121 } /* Literal.String */
+			.highlight .na { color: #7D9029 } /* Name.Attribute */
+			.highlight .nb { color: #008000 } /* Name.Builtin */
+			.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+			.highlight .no { color: #880000 } /* Name.Constant */
+			.highlight .nd { color: #AA22FF } /* Name.Decorator */
+			.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+			.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+			.highlight .nf { color: #0000FF } /* Name.Function */
+			.highlight .nl { color: #A0A000 } /* Name.Label */
+			.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+			.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+			.highlight .nv { color: #19177C } /* Name.Variable */
+			.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+			.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+			.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+			.highlight .mf { color: #666666 } /* Literal.Number.Float */
+			.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+			.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+			.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+			.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+			.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+			.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+			.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+			.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+			.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+			.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+			.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+			.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+			.highlight .sx { color: #008000 } /* Literal.String.Other */
+			.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+			.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+			.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+			.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+			.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+			.highlight .vc { color: #19177C } /* Name.Variable.Class */
+			.highlight .vg { color: #19177C } /* Name.Variable.Global */
+			.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+			.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+			.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
+		</style>
+		<style type="text/css">
+			/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+			.ansi-black-fg { color: #3E424D; }
+			.ansi-black-bg { background-color: #3E424D; }
+			.ansi-black-intense-fg { color: #282C36; }
+			.ansi-black-intense-bg { background-color: #282C36; }
+			.ansi-red-fg { color: #E75C58; }
+			.ansi-red-bg { background-color: #E75C58; }
+			.ansi-red-intense-fg { color: #B22B31; }
+			.ansi-red-intense-bg { background-color: #B22B31; }
+			.ansi-green-fg { color: #00A250; }
+			.ansi-green-bg { background-color: #00A250; }
+			.ansi-green-intense-fg { color: #007427; }
+			.ansi-green-intense-bg { background-color: #007427; }
+			.ansi-yellow-fg { color: #DDB62B; }
+			.ansi-yellow-bg { background-color: #DDB62B; }
+			.ansi-yellow-intense-fg { color: #B27D12; }
+			.ansi-yellow-intense-bg { background-color: #B27D12; }
+			.ansi-blue-fg { color: #208FFB; }
+			.ansi-blue-bg { background-color: #208FFB; }
+			.ansi-blue-intense-fg { color: #0065CA; }
+			.ansi-blue-intense-bg { background-color: #0065CA; }
+			.ansi-magenta-fg { color: #D160C4; }
+			.ansi-magenta-bg { background-color: #D160C4; }
+			.ansi-magenta-intense-fg { color: #A03196; }
+			.ansi-magenta-intense-bg { background-color: #A03196; }
+			.ansi-cyan-fg { color: #60C6C8; }
+			.ansi-cyan-bg { background-color: #60C6C8; }
+			.ansi-cyan-intense-fg { color: #258F8F; }
+			.ansi-cyan-intense-bg { background-color: #258F8F; }
+			.ansi-white-fg { color: #C5C1B4; }
+			.ansi-white-bg { background-color: #C5C1B4; }
+			.ansi-white-intense-fg { color: #A1A6B2; }
+			.ansi-white-intense-bg { background-color: #A1A6B2; }
+			.ansi-bold { font-weight: bold; }
+		</style>
+<div>
+	<div >	
+		<h1 id="my-asr-book">My ASR Book</h1>
+<p class="comments-section">语音识别的基本任务是将人类语音转换成相应的文字，语音识别技术设计的领域主要包括信号处理，模式识别，概率论，信息论和人工智能等。一个典型的语音识别系统如下：<div class="comments-icon"></div></p>
+<ul>
+<li>信号处理主要用于声学特征提取，声学模型可以根据该特征计算声学单元各成分的概率，对于基于深度学习的方法则可以直接有声学特征到文字（声学打分含在深度学习的隐藏层中），在日常的嘈杂环境中，信号处理还被用于语音增强，这包括回声消除，主动降噪，波束形成，去混响等等。</li>
+<li>声学模型，通常一个字的发音分为多个音节，每个音节又分为若干音素，不同的字是不同音节的有序组合，不同的音节又是不同音素的有序组合，这些有序组合通常使用马尔科夫链来表示，在实际工程计算中使用加权有限自动机(wfst)来表示。特征常用的有LPC，MFCC，在深度学习方法之后也可以采用logFbank做为特征，这在减少计算量的同时，以类似人耳的方式对音频进行了处理，以获得较好的语音识别性能。</li>
+<li>发音词典，包含了语音识别系统能够处理的所有词汇及其发音，发音字典建立了声学模型单元和语言模型单元间的映射关系。</li>
+<li>语言模型，语言模型是对人类说话习惯性的描述，如"请关门"和"请关闷"，如果给发音”qing guan men“,那么绝大多数人会认为是请关门，语言模型通常基于统计的N元文法及其变体。</li>
+<li>解码器，解码器是语音识别系统的核心之一，其根据输入的信号，根据声学特征，语言模型以及发音词典寻找最大概率的词串。 </li>
+<li>开源语音识别框架，kaldi用的较为广泛，且kaldi已经支持开源深度学习框架tensorflow，未来将会更加完善，搭建一个demo级别的语音识别系统将轻轻松松。一个语音识别系统的准确率将取决于训练的语料集和文本集合。</li>
+</ul>
+<p class="comments-section">该书主要针对是否远场语音识别自然交互的应用场景的相关语音技术，包括声学特性，麦克风特性，语音增强技术和语音识别技术。这会涉及到结构设计验证，麦克风选择。<div class="comments-icon"></div></p>
+<p class="comments-section">第一章主要是结构和器件在ASR中应用注意事项<br>对于结构设计，主要是结构设计上对麦克风采集到的信号的影响，包括结构震动，腔体效应，管道效应，当前也包括器件的物理特性，主要是麦克风拾音开孔和内部腔体。<div class="comments-icon"></div></p>
+<p class="comments-section">第二章~第十三章是基于信号处理方法的语音增强技术<br>对于语音增强技术，主要是指常用的语音信号处理，这包括VAD（voice activity detection）,AEC(automatic echo cacellantion),DOA(direction of arrival),NS(noise suppresion),BF(beamforming), BSS(blind source seperation)等偏重信号处理层面的，会有针对具体开源库的实例算法讲解。<div class="comments-icon"></div></p>
+<p class="comments-section">第十四章~十八章是基于kaldi和tensorflow开源框架的语音识别系统搭建.<br>包括特征提取，混合高斯模型/NN（neutral network）声学模型和声学解码,语言模型等。<div class="comments-icon"></div></p>
+<p class="comments-section">第十九章<br>最后还会附上算法工程化上的一些笔者体会.<div class="comments-icon"></div></p>
+<p class="comments-section">最后的附录是一些数学和信号处理知识点的梳理.<div class="comments-icon"></div></p>
+<p class="comments-section">注:似乎在线的对latex格式公式支持不好.可以使用gitbook editor以markdown格式看。<div class="comments-icon-"></div></p>
+</section>
+	<h1 id="第一章-结构和器件">第一章 结构和器件</h1>
+<p class="comments-section">对于自然语音识别场景，仅有语音增强和语音识别算法还不足以确定语音识别的准确性,产品结构引入的声学特性变换和采集器件的非理想因素会导致获取到的语音质量的下降,这些不利影响很难通过算法进行完全的弥补.由于这个方面并不是本书的重点,在此花一个篇章进行概述性聊聊。
+首先是产品的结构的影响,在一个好的音响设计系统中,不可避免的会涉及到影响的声学设计,一般市场千元左右的音响,以全频段喇叭加低音辐射盆的结构形式.低音辐射盆用于弥补全频段喇叭在低音上的缺陷,这个设计会在一定程度上对AEC(automatic echo cancellation)提出一定的挑战.且音响质量越好的系统,往往对ASR提出的挑战越大.<div class="comments-icon"><div class="marker">+</div></div></p>
+<h2 id="喇叭">喇叭</h2>
+<h3 id="电学性能">电学性能</h3>
+<p class="comments-section">音响上常用的电学性能测试设备是AudioPrecision,这里罗列出比较关心的指标，测试环境的搭建这里略过.<div class="comments-icon"></div></p>
+<table>
+<thead>
+<tr>
+<th>测试项</th>
+<th>项目的意义</th>
+<th>影响的声学特性</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>THD+N</td>
+<td>Total Harmonic Distortion +Noise</td>
+<td>描述的是功放器件在给定功率下的谐波失真加噪声,这就意味这经过功放器件后,声音和原始音源差异</td>
+</tr>
+<tr>
+<td>SNR</td>
+<td>Signal to noise Ratio</td>
+<td>反映的是信号和噪声的比,在无失真前提下,越大越好</td>
+</tr>
+<tr>
+<td>Crosstalk</td>
+<td></td>
+<td>反映的是一个声道对另一个声道的影响,通常好的影响,我们希望有两个喇叭做左右声道,以增强立体感</td>
+</tr>
+<tr>
+<td>Distortion</td>
+<td></td>
+<td>不同频率的声音经过功放器件后,其失真是不一样的</td>
+</tr>
+<tr>
+<td>DC offset</td>
+<td></td>
+<td>反映的是无声音输入时,功放器件的输出情况</td>
+</tr>
+</tbody>
+</table>
+<p class="comments-section">实际上电子集成器件技术的发展已经在可以使上述指标可以用相对较低的成本满足ASR的要求了,(但是对于刁钻的人耳而言,差异还挺大,比如常用的低配音响会使用D类功放做为功率放大的核心,但是开关阈值的非线性却会导致失真).通常而定功率下THD+N全频段(20Hz~20KHZ)做到1%之下,大功率情况下也要注意绝对值.
+如果想看完整测试报告,可以参考文档:
+<a href="https://github.com/shichaog/WebRTC-audio-processing/blob/master/AudioPrecision_test.pdf" target="_blank">Audio Precision test report example</a>
+这里需要提及的是,一般而言功放芯片都会有一个codec(TI/yamaha以及新唐),这个codec可以对最终出来的音效进行补偿,包括EQ等.<div class="comments-icon"></div></p>
+<h3 id="声学性能">声学性能</h3>
+<p class="comments-section">声学性能主要是指喇叭和辐射盆震动的理想性,理论上来说我们希望喇叭和辐射盆的往复运动是线性的,也即喇叭和前进的距离和给的功率是$$L=kx$$关系,但是我们知道实际上在输出功率很小或者输出功率超出额定功率的时候,喇叭的声音是失真的,这是因为电能所转换出的磁能再转变成弹簧的机械能时,他们的各自部分并不是线性的关系,一个直观的就是在弹簧拉到一定程度时,所给的力和弹簧拉动的距离所成的比例有所变动,这会导致最终喇叭推动的空气也不是等比的,失真由此产生;在声学性能上会使用激光测试喇叭的震动情况,当然喇叭的测试项也是使用专门的仪器来完成的,此外所选磁性材料的选择也是一门很深的学问,所以关于喇叭的设计通常都是给专门的喇叭公司来设计.
+这部分主要是音响工程但也并不意味ASR人员不需要关注,由于喇叭会发出声音,(AEC)的效果好坏也和这部分有关,当然是给到AEC的参考信号和播放出来的越接近越好.<div class="comments-icon"></div></p>
+<h2 id="麦克风">麦克风</h2>
+<p class="comments-section">对音响有了一个更深的理解后,再来看看麦克风,麦克风对声音的敏感对要比人耳大多的,如果使用上面的喇叭播放DTMF(双音多频)音源,在人耳可以区分的情况下,未必麦克风采集到的信号,经过算法未必可以判决出来.(产线批量生产时测试麦克风和喇叭好坏的一个一个方法).
+这里以数字麦克为例,一般的麦克风为了节省硅片面积,采用多阶数的$$\sum-\Delta$$型模数转换,这就需要在硬件上避免频域混跌,这就需要进行重采样,这就引出了第二章的内容(由于语音技术的民用普及,$$\Delta-\sum$$)的模数转换也出现了,这样就可以不需要进行重采样了,需要关注的指标如下:<div class="comments-icon"></div></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th></th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sensitivity</td>
+<td>可以探测到最小声压的声音(如-27dBFS)</td>
+</tr>
+<tr>
+<td>SNR</td>
+<td>同样要关心麦克风本身引入的噪声对信号质量的音响</td>
+</tr>
+<tr>
+<td>AOP</td>
+<td>Acoustic Overload Point,声压过大导致超过10%失真,这影响到产品的使用场景</td>
+</tr>
+<tr>
+<td>Frequency Response</td>
+<td>麦克风对不同频率信号在不同声压下放大一致性如何</td>
+</tr>
+</tbody>
+</table>
+<p class="comments-section">另外还要看批量产品的动态误差,温湿度影响(ADC器件的温漂)等.由于人声发音范围是20Hz~20KHz,一般麦克风$$\sum-\Delta$$的截止频率设置在20KHz以上,根据奈奎斯特采用定理,如果要不产生频谱混跌,就意味这采样率$$f_s \ge 40KHz$$,为了便于重采样算法,很多系统设计会采用48KHz采样,而后转成16KHz(通常ASR系统声学特征提取是安装16KHz提取的,这是均衡了数据处理量和性能的综合考虑结果).
+如上是单颗麦克风的指标,为了便于远场语音识别之类的应用,大多数产品采用多个麦克风组成的阵列做为语音设备的声音获取来源,由于算法的需要,通常会产生出通道一致性的问题,(在雷达系统中常使用自适应通道均衡技术),但是这在麦克风阵列情况下很少采用.
+所以麦克风参数的动态范围一定是要参考的,此外麦克风之间的相位一致性也是很重要的.<div class="comments-icon"></div></p>
+<ul>
+<li>麦克风采集</li>
+<li>采样率，截止频率在8KHz，这要求采样率$$f_s \ge 16KHz$$，为了防止频谱混跌，通常采样率大于$$16KHz$$,经过重采样后到$$16KHz$$</li>
+<li>为了减小语音失真，通常处理过程不加AGC，可以的化也不加NS（如果服务端有抗噪训练,如果不能处理噪声，ns也是需要的）</li>
+<li>避免语音被截幅（AOP要高，$$120dB@1KHz$$），峰值电平在-20~10dBFS为宜</li>
+<li>频谱尽量平坦（$$\pm 3dB$$,$$100-8000Hz$$），有两层意义，一个是麦克风频谱要求尽量频谱，一个是声音传播损耗需要预加重来增强。</li>
+<li>总谐波失真要小，小于1%（从$$100Hz-8KHz,@90dB SPL$$）</li>
+<li>SNR要高（$$\ge 65dB$$为佳），减小ADC器件本身带来的噪声。</li>
+<li>采样有效比特数，其影响的是信噪比，大于等于16bit即可</li>
+<li>语音传输到服务端，对识别率由好到差（网络带宽由大到小）是：FLAC/LINEAR16， AWR_WB,OGG_OPUS</li>
+</ul>
+<p><img src="https://shichaog1.gitbooks.io/hand-book-of-asr-processing/content/20170925150255204.png" alt=""></p>
+<blockquote>
+<p class="comments-section">图1.1 频谱平坦度实例<div class="comments-icon"></div></p>
+</blockquote>
+<p><img src="https://shichaog1.gitbooks.io/hand-book-of-asr-processing/contentassets/20170925150303814.png" alt=""></p>
+<blockquote>
+<p class="comments-section">图1.2 THD实例<div class="comments-icon"></div></p>
+</blockquote>
+<h2 id="结构设计">结构设计</h2>
+<p class="comments-section">结构设计上会带来震动,产品外观会带来腔体结构影响,<div class="comments-icon"></div></p>
+<p class="comments-section"><img src="https://shichaog1.gitbooks.io/hand-book-of-asr-processing/contentassets/mic.png" alt="">
+图1.3 硅麦
+上图是一个顶出音的硅麦(此外还有底出音,通常两种开孔的声学特性是有差异的,此外在批量生成波峰焊接时也是有影响的).
+一般上图中的麦克并不是裸露在空气中的,而是在产品的外观里面,这样就相当于把麦克风放在腔体里面,麦克风采集到的信号不在是自由场场景了,对于震动情况,可以通常采样橡胶或者悬浮的方式进行,此外,还将喇叭和麦克风放在物理尺寸最大的两极,而对于腔体通常采样紧贴或者设置导音孔(驻波).最终还是要测试多路麦克风在扫频情况下幅频和相频相应的一致性,验证导引孔之类的结构设计的合理性.<div class="comments-icon"></div></p>
+<h2 id="结束语">结束语</h2>
+<p class="comments-section">为了设计出良好的ASR系统,对于结构和电声特性还是要积累,以便有一个更加全面的认识,当然,如果是做批量生产的产品,仅仅考虑ASR还是不够的,还要考虑供应链的稳定性,生产测试便利性和高效性等<div class="comments-icon"></div></p>
+</section>
+	</div>
+</div>
+</div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</div>
+<footer>
+<br />
+<p><a href="https://applenob.github.io">DanteLiujie's blog</a> &copy; DanteLiujie 2018</p>
+</footer>
+
+</div> <!-- /container -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src="https://applenob.github.io/theme/bootstrap-collapse.js"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-99008972-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+ 
+</body>
+</html>
